@@ -1,5 +1,4 @@
 #include "mainwidget.h"
-#include "auto.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
