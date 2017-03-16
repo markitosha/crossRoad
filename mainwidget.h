@@ -17,23 +17,6 @@ class Road: public QGraphicsRectItem {
 
 };
 
-class Auto: public QGraphicsEllipseItem {
-    QColor color;
-    int centerX,
-        centerY,
-        radius,
-        speed,
-        beginRoad,
-        endRoad;
-
-public:
-    Auto(int cX = 0, int cY = 0, int r = 100, int sp = 10, int bR = 1, int eR = 4);
-
-    // QGraphicsItem interface
-public:
-    void advance(int phase);
-};
-
 class Widget : public QWidget
 {
     Q_OBJECT

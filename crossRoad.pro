@@ -24,10 +24,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-    mainwidget.cpp
+    mainwidget.cpp \
+    auto.cpp
 
 HEADERS  += \
-    mainwidget.h
+    mainwidget.h \
+    auto.h
 
 FORMS    += \
     mainwidget.ui

@@ -1,5 +1,6 @@
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
+#include "auto.h"
 #include <iostream>
 
 Widget::Widget(QWidget *parent) :
@@ -26,18 +27,4 @@ Widget::~Widget()
 void Widget::onGenerate()
 {
     scene->addItem(new Auto());
-}
-
-Auto::Auto(int cX, int cY, int r, int sp, int bR, int eR): QGraphicsEllipseItem(0),
-    centerX(cX), centerY(cY), radius(r), speed(sp), beginRoad(bR), endRoad(eR) {
-    color = QColor(0, 0, 0);
-    setBrush(color);
-    setRect(0, 0, radius, radius);
-    setPos(centerX, centerY);
-}
-
-void Auto::advance(int phase) {
-    if (phase) {
-        moveBy(0, speed);
-    }
 }
