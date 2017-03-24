@@ -19,7 +19,7 @@ class Auto: public QGraphicsEllipseItem {
         endRoad;
 
 public:
-    Auto(int cX = 0, int cY = 0, int r = 100, int sp = 10, int bR = 1, int eR = 4);
+    Auto(int cX = 0, int cY = 0, int r = 50, int sp = 10, int bR = 1, int eR = 4);
     Auto(const Auto &obj);
 
     // QGraphicsItem interface
