@@ -1,30 +1,40 @@
 #ifndef AUTO_H
 #define AUTO_H
 
-#include <QWidget>
+#include "point.h"
 
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QGraphicsItem>
+enum Color {
+    RED, GREEN, YELLOW
+};
 
-#include <QTimer>
+enum State {
+    RUN, REBUILD
+};
 
-class Auto: public QGraphicsEllipseItem {
-    QColor color;
-    int centerX,
-        centerY,
-        radius,
-        speed,
-        beginRoad,
-        endRoad;
+class Auto {
+    Color color;
+    State state;
+    Point center;
+    int speed;
+    int startRoad;
+    int finishRoad;
+    int currentRoad;
+    int width;
 
 public:
-    Auto(int cX = 0, int cY = 0, int r = 50, int sp = 10, int bR = 1, int eR = 4);
-    Auto(const Auto &obj);
+    Auto(int speed = 10, int startRoad = 0, int finishRoad = 0);
 
-    // QGraphicsItem interface
-public:
-    void advance(int phase);
+    void moveBy(Point offset);
+
+    void changeSpeed(int newSpeed);
+
+    void setPosition(Point newPosition);
+
+    void step(void *currentRoudWay);
+
+    Point getPosition() {
+        return center;
+    }
 };
 
 #endif // AUTO_H

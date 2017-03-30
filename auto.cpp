@@ -1,26 +1,35 @@
+#include <iostream>
 #include "auto.h"
+#include "constants.h"
+#include "roadway.h"
 
-Auto::Auto(int cX, int cY, int r, int sp, int bR, int eR): QGraphicsEllipseItem(0),
-    centerX(cX), centerY(cY), radius(r), speed(sp), beginRoad(bR), endRoad(eR) {
-    color = QColor(0, 0, 0);
-    setBrush(color);
-    setRect(0, 0, radius, radius);
-    setPos(centerX, centerY);
-}
+using namespace std;
 
-Auto::Auto(const Auto &obj)
+Auto::Auto(int speed, int startRoad, int finishRoad) :
+    speed(speed), startRoad(startRoad), finishRoad(finishRoad)
 {
-    this->centerX = obj.centerX;
-    this->centerY = obj.centerY;
-    this->radius = obj.radius;
-    this->speed = obj.speed;
-    this->beginRoad = obj.beginRoad;
-    this->endRoad = obj.endRoad;
-    this->color = obj.color;
+    state = RUN;
+    color = GREEN;
+    currentRoad = startRoad;
+    width = WIDTH_AUTO;
+    center = Point();
 }
 
-void Auto::advance(int phase) {
-    if (phase) {
-        moveBy(0, speed);
-    }
+void Auto::moveBy(Point offset) {
+    center.x += offset.x * speed;
+    center.y += offset.y * speed;
+}
+
+void Auto::changeSpeed(int newSpeed) {
+    color = newSpeed > speed ? RED : (newSpeed < speed ? YELLOW : GREEN);
+    speed = newSpeed;
+}
+
+void Auto::setPosition(Point newPosition) {
+    center = newPosition;
+}
+
+void Auto::step(void *currentRoudWay) {
+    this->moveBy(((LineRoadWay*)currentRoudWay)->calcOffssetPosition(speed));
+    cout << center.x << " " << center.y << endl;
 }

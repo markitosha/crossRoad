@@ -9,6 +9,8 @@
 
 #include <QTimer>
 
+#include "model.h"
+
 namespace Ui {
     class Widget;
 }
@@ -29,7 +31,7 @@ private:
     QGraphicsScene *scene;
     QTimer *animationTimer;
     QTimer *generatorTimer;
-
+    Model *myModel;
 };
 
 #endif // WIDGET_H
