@@ -15,21 +15,16 @@ Auto::Auto(int speed, int startRoad, int finishRoad) :
     center = Point();
 }
 
-void Auto::moveBy(Point offset) {
-    center.x += offset.x * speed;
-    center.y += offset.y * speed;
-}
-
 void Auto::changeSpeed(int newSpeed) {
     color = newSpeed > speed ? RED : (newSpeed < speed ? YELLOW : GREEN);
     speed = newSpeed;
 }
 
 void Auto::setPosition(Point newPosition) {
-    center = newPosition;
+    center.x = newPosition.x;
+    center.y = newPosition.y;
 }
 
 void Auto::step(void *currentRoudWay) {
-    this->moveBy(((LineRoadWay*)currentRoudWay)->calcOffssetPosition(speed));
-    cout << center.x << " " << center.y << endl;
+    this->setPosition(((RoadWay*)currentRoudWay)->calcOffssetPosition(center, speed));
 }

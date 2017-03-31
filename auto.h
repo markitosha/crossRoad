@@ -24,8 +24,6 @@ class Auto {
 public:
     Auto(int speed = 10, int startRoad = 0, int finishRoad = 0);
 
-    void moveBy(Point offset);
-
     void changeSpeed(int newSpeed);
 
     void setPosition(Point newPosition);

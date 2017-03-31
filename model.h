@@ -8,6 +8,7 @@ class Model
 public:
     int roadNum;
     RoadWay *roadWay;
+    RoadWay *roadWay2;
 
     Model();
 

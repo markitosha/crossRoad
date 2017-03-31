@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include "auto.h"
+#include "constants.h"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ public:
    // virtual bool canAddAuto() = 0;
    // virtual Auto& findNearestAuto(Point point) = 0;
    // virtual int findMaxSpeed(Point point) = 0;
-    virtual Point calcOffssetPosition(int speed) = 0;
+    virtual Point calcOffssetPosition(Point oldPosition, int speed) = 0;
 };
 
 class LineRoadWay: public RoadWay {
@@ -42,12 +43,12 @@ public:
         lineSin = sin(arctan);
     }
 
-    Point calcOffssetPosition(int speed) {
+    Point calcOffssetPosition(Point oldPosition, int speed) {
         if (speed == 0) {
-            return Point(0, 0);
+            return oldPosition;
         }
 
-        return Point(lineCos * speed, lineSin * speed);
+        return Point(oldPosition.x + lineCos * speed, oldPosition.y + lineSin * speed);
     }
 
     void addAuto(Auto &newAuto) {
@@ -67,17 +68,23 @@ public:
 class CircleRoadWay: public RoadWay {
     Point centerPoint;
     float radius;
+    float period;
 
 public:
     CircleRoadWay(Point centerPoint, float radius)
-        : centerPoint(centerPoint), radius(radius) {}
+        : radius(radius) {
+        this->centerPoint.x = centerPoint.x;
+        this->centerPoint.y = centerPoint.y;
+        period = - PI;
+    }
 
-    Point calcOffssetPosition(int speed) {
+    Point calcOffssetPosition(Point oldPosition, int speed) {
         if (speed == 0) {
-            return Point(0, 0);
+            return oldPosition;
         }
 
-        return Point(radius * cos(speed / radius), radius * sin(speed / radius));
+        period += PI / 2;
+        return Point(centerPoint.x + radius * cos(speed / radius * period), centerPoint.y + radius * sin(speed / radius * period));
     }
 
     void addAuto(Auto &newAuto) {
@@ -88,7 +95,7 @@ public:
         return centerPoint;
     }
 
-    Point getRadius() {
+    int getRadius() {
         return radius;
     }
 };
