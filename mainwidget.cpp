@@ -1,6 +1,5 @@
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
-#include "auto.h"
 #include "constants.h"
 #include <iostream>
 
@@ -36,6 +35,27 @@ void renderLineRoad(LineRoad * road, QGraphicsScene *scene ) {
     scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y, QPen(Qt::white));
 }
 
+void renderCircleRoad(CircleRoad * road, QGraphicsScene *scene) {
+    for (int i = 0; i < road->roadWays.size(); ++i) {
+        renderCircleRoadWay((CircleRoadWay *)road->roadWays[i], scene);
+    }
+
+    int innerRadius = road->getInnerRadius();
+    Point center = road->getCenterPoint();
+    QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-innerRadius, -innerRadius, 2 * innerRadius, 2 * innerRadius);
+    circle->setPos(center.x, center.y);
+    circle->setPen(QColor(255, 255, 255));
+    scene->addItem(circle);
+}
+
+void renderModel(Model * model, QGraphicsScene *scene) {
+    renderCircleRoad((CircleRoad *)model->roads[0], scene);
+
+    for (int i = 1; i < model->roads.size(); ++i) {
+        renderLineRoad((LineRoad *)model->roads[i], scene);
+    }
+ }
+
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
@@ -50,12 +70,10 @@ Widget::Widget(QWidget *parent) :
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(onGenerate()));
     animationTimer->start(100);
 
-    myModel = new Model();
+    myModel = new Model(1, 2, 500, 500);
     myModel->start();
 
-    renderLineRoad((LineRoad *)myModel->road, scene);
-//    renderCircleRoadWay((CircleRoadWay *)myModel->roadWay2, scene);
-//    renderAuto(myModel->roadWay2->autoArray[0], scene);
+    renderModel(myModel, scene);
 }
 
 Widget::~Widget()
@@ -68,8 +86,5 @@ void Widget::onGenerate()
     scene->clear();
     myModel->step();
 
-    renderLineRoad((LineRoad *)myModel->road, scene);
-
-//    renderCircleRoadWay((CircleRoadWay *)myModel->roadWay2, scene);
-//    renderAuto(myModel->roadWay2->autoArray[0], scene);
+    renderModel(myModel, scene);
 }

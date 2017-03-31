@@ -2,18 +2,32 @@
 #define MODEL_H
 
 #include "road.h"
+#include "constants.h"
 
 class Model
 {
-public:
     int roadNum;
-    Road *road;
+    int height;
+    int width;
 
-    Model();
+public:
+    vector <Road *> roads;
 
-    void start();
+    Model(int roadNum, int roadWayNum, int height, int width) : roadNum(roadNum), height(height), width(width) {
+        auto center = Point(width / 2, height / 2);
+        auto centerCircle = new CircleRoad(center, INNER_RADIUS * MST, roadWayNum);
+        roads.push_back(centerCircle);
 
-    void step();
+        roads.push_back(new LineRoad(Point(center.x, height), Point(center.x, center.y + centerCircle->getFullRadius()), roadWayNum));
+
+        for (int i = 0; i < roadNum; ++i) {
+           // roads.push_back(new LineRoad(Point(width / 2))
+        }
+    }
+
+    void start() {};
+
+    void step() {};
 };
 
 #endif // MODEL_H
