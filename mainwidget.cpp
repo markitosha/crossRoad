@@ -18,12 +18,22 @@ void renderCircleRoadWay(CircleRoadWay *roadWay, QGraphicsScene *scene) {
     scene->addItem(circle);
 }
 
-void renderAuto(Auto &aut, QGraphicsScene *scene ) {
+void renderAuto(Auto &aut, QGraphicsScene *scene) {
     Point center = aut.getPosition();
     int width = aut.getWidth() * MST;
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-width / 2, -width / 2, width, width);
     circle->setPos(center.x, center.y);
     scene->addItem(circle);
+}
+
+void renderLineRoad(LineRoad * road, QGraphicsScene *scene ) {
+    for (int i = 0; i < road->roadWays.size(); ++i) {
+        renderLineRoadWay((LineRoadWay *)road->roadWays[i], scene);
+    }
+
+    Point entryPoint = road->getEntryPoint();
+    Point endPoint = road->getEndPoint();
+    scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y, QPen(Qt::white));
 }
 
 Widget::Widget(QWidget *parent) :
@@ -43,8 +53,9 @@ Widget::Widget(QWidget *parent) :
     myModel = new Model();
     myModel->start();
 
-    renderCircleRoadWay((CircleRoadWay *)myModel->roadWay2, scene);
-    renderAuto(myModel->roadWay2->autoArray[0], scene);
+    renderLineRoad((LineRoad *)myModel->road, scene);
+//    renderCircleRoadWay((CircleRoadWay *)myModel->roadWay2, scene);
+//    renderAuto(myModel->roadWay2->autoArray[0], scene);
 }
 
 Widget::~Widget()
@@ -57,6 +68,8 @@ void Widget::onGenerate()
     scene->clear();
     myModel->step();
 
-    renderCircleRoadWay((CircleRoadWay *)myModel->roadWay2, scene);
-    renderAuto(myModel->roadWay2->autoArray[0], scene);
+    renderLineRoad((LineRoad *)myModel->road, scene);
+
+//    renderCircleRoadWay((CircleRoadWay *)myModel->roadWay2, scene);
+//    renderAuto(myModel->roadWay2->autoArray[0], scene);
 }

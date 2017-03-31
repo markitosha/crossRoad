@@ -1,14 +1,13 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "roadway.h"
+#include "road.h"
 
 class Model
 {
 public:
     int roadNum;
-    RoadWay *roadWay;
-    RoadWay *roadWay2;
+    Road *road;
 
     Model();
 

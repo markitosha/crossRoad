@@ -2,20 +2,21 @@
 
 Model::Model() {
     roadNum = 1;
-    roadWay = new LineRoadWay(Point(450, 123), Point(154, 235));
-    roadWay2 = new CircleRoadWay(Point(250, 250), 200.0);
+//    roadWay = new LineRoadWay(Point(450, 123), Point(154, 235));
+//    roadWay2 = new CircleRoadWay(Point(250, 250), 200.0);
+    road = new LineRoad(Point(450, 123), Point(154, 235), 2);
 }
 
 void Model::start() {
-    Auto newAuto(3);
-    Auto newAuto2(1);
-    newAuto.setPosition(((LineRoadWay*)roadWay)->getEntryPoint());
-    newAuto2.setPosition(Point(250, 150));
-    roadWay->addAuto(newAuto);
-    roadWay2->addAuto(newAuto2);
+//    Auto newAuto(3);
+//    Auto newAuto2(1);
+//    newAuto.setPosition(((LineRoadWay*)roadWay)->getEntryPoint());
+//    newAuto2.setPosition(Point(250, 150));
+//    roadWay->addAuto(newAuto);
+//    roadWay2->addAuto(newAuto2);
 }
 
 void Model::step() {
-    roadWay->autoArray[0].step(roadWay);
-    roadWay2->autoArray[0].step(roadWay2);
+//    roadWay->autoArray[0].step(roadWay);
+//    roadWay2->autoArray[0].step(roadWay2);
 }

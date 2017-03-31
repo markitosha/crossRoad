@@ -27,7 +27,8 @@ SOURCES += main.cpp \
     auto.cpp \
     mainwidget.cpp \
     roadway.cpp \
-    model.cpp
+    model.cpp \
+    road.cpp
 
 HEADERS  += \
     mainwidget.h \
@@ -35,7 +36,8 @@ HEADERS  += \
     model.h \
     roadway.h \
     point.h \
-    constants.h
+    constants.h \
+    road.h
 
 FORMS    += \
     mainwidget.ui
