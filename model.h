@@ -18,7 +18,7 @@ public:
         auto centerCircle = new CircleRoad(center, INNER_RADIUS * MST, roadWayNum);
         roads.push_back(centerCircle);
 
-        roads.push_back(new LineRoad(Point(center.x, height), Point(center.x, center.y + centerCircle->getFullRadius()), roadWayNum));
+        roads.push_back(new LineRoad(Point(center.x, height), Point(center.x, center.y + centerCircle->getFullRadius()), roadWayNum, center));
 
         for (int i = 0; i < roadNum; ++i) {
            // roads.push_back(new LineRoad(Point(width / 2))

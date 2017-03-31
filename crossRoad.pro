@@ -39,7 +39,8 @@ HEADERS  += \
     point.h \
     constants.h \
     road.h \
-    line.h
+    line.h \
+    circle.h
 
 FORMS    += \
     mainwidget.ui

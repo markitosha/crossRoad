@@ -5,6 +5,7 @@
 
 #include "roadway.h"
 #include "line.h"
+#include "circle.h"
 #include "constants.h"
 
 class Road
@@ -25,9 +26,10 @@ class LineRoad : public Road {
     Point endPoint;
 
 public:
-    LineRoad(Point entryPoint,  Point endPoint, int roadWayNum) : Road(roadWayNum), entryPoint(entryPoint), endPoint(endPoint) {
+    LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point center) : Road(roadWayNum), entryPoint(entryPoint), endPoint(endPoint) {
         Line centralLine(entryPoint, endPoint);
         Line perpendicular = centralLine.perpendicular(entryPoint);
+        Circle mainCircle(center.x, center.y, center.distance(endPoint));
 
         for (int i = 0, offset =  - width / 2 - width * (roadWayNum / 2 - 1); i < roadWayNum; ++i, offset += width) {
             LineRoadWay * newRoadWay;
@@ -37,11 +39,12 @@ public:
 
             Line offsetLine(entryOffset, endOffset);
             Point entryOffsetPoint = offsetLine.crossLine(perpendicular);
+            Point endOffsetPoint = mainCircle.crossLine(offsetLine, endOffset);
 
             if (i < roadWayNum / 2) {
-                newRoadWay = new LineRoadWay(endOffset, entryOffsetPoint);
+                newRoadWay = new LineRoadWay(endOffsetPoint, entryOffsetPoint);
             } else {
-                newRoadWay = new LineRoadWay(entryOffsetPoint, endOffset);
+                newRoadWay = new LineRoadWay(entryOffsetPoint, endOffsetPoint);
             }
 
             roadWays.push_back(newRoadWay);
