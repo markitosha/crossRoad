@@ -1,6 +1,7 @@
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
 #include "auto.h"
+#include "constants.h"
 #include <iostream>
 
 void renderLineRoadWay(LineRoadWay *roadWay, QGraphicsScene *scene) {
@@ -19,7 +20,7 @@ void renderCircleRoadWay(CircleRoadWay *roadWay, QGraphicsScene *scene) {
 
 void renderAuto(Auto &aut, QGraphicsScene *scene ) {
     Point center = aut.getPosition();
-    int width = aut.getWidth();
+    int width = aut.getWidth() * MST;
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-width / 2, -width / 2, width, width);
     circle->setPos(center.x, center.y);
     scene->addItem(circle);

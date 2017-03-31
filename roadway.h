@@ -83,7 +83,7 @@ public:
             return oldPosition;
         }
 
-        time += 100; // полный круг -- радиус
+        time += 1; // полный круг -- радиус
         return Point(centerPoint.x + radius * cos(speed / radius * PI * time), centerPoint.y + radius * sin(speed / radius * PI * time));
     }
 
