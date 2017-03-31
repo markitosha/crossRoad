@@ -68,14 +68,14 @@ public:
 class CircleRoadWay: public RoadWay {
     Point centerPoint;
     float radius;
-    float period;
+    int time;
 
 public:
     CircleRoadWay(Point centerPoint, float radius)
         : radius(radius) {
         this->centerPoint.x = centerPoint.x;
         this->centerPoint.y = centerPoint.y;
-        period = - PI;
+        time = 0;
     }
 
     Point calcOffssetPosition(Point oldPosition, int speed) {
@@ -83,8 +83,8 @@ public:
             return oldPosition;
         }
 
-        period += PI / 2;
-        return Point(centerPoint.x + radius * cos(speed / radius * period), centerPoint.y + radius * sin(speed / radius * period));
+        time += 1;
+        return Point(centerPoint.x + radius * cos(speed / radius * PI * time), centerPoint.y + radius * sin(speed / radius * PI * time));
     }
 
     void addAuto(Auto &newAuto) {
