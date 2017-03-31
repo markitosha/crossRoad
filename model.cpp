@@ -3,7 +3,7 @@
 Model::Model() {
     roadNum = 1;
     roadWay = new LineRoadWay(Point(450, 123), Point(154, 235));
-    roadWay2 = new CircleRoadWay(Point(250, 250), 100.0);
+    roadWay2 = new CircleRoadWay(Point(250, 250), 200.0);
 }
 
 void Model::start() {

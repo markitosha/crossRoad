@@ -3,6 +3,28 @@
 #include "auto.h"
 #include <iostream>
 
+void renderLineRoadWay(LineRoadWay *roadWay, QGraphicsScene *scene) {
+    Point entryPoint = roadWay->getEntryPoint();
+    Point endPoint = roadWay->getEndPoint();
+    scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y);
+}
+
+void renderCircleRoadWay(CircleRoadWay *roadWay, QGraphicsScene *scene) {
+    int radius = roadWay->getRadius();
+    Point center = roadWay->getCenterPoint();
+    QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-radius, -radius, 2 * radius, 2 * radius);
+    circle->setPos(center.x, center.y);
+    scene->addItem(circle);
+}
+
+void renderAuto(Auto &aut, QGraphicsScene *scene ) {
+    Point center = aut.getPosition();
+    int width = aut.getWidth();
+    QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-width / 2, -width / 2, width, width);
+    circle->setPos(center.x, center.y);
+    scene->addItem(circle);
+}
+
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
@@ -20,20 +42,8 @@ Widget::Widget(QWidget *parent) :
     myModel = new Model();
     myModel->start();
 
-//    Point entryPoint = ((LineRoadWay*)(myModel->roadWay))->getEntryPoint();
-//    Point endPoint = ((LineRoadWay*)(myModel->roadWay))->getEndPoint();
-//    scene->addLine(entryPoint.x, entryPoint.y,
-//                   endPoint.x, endPoint.y);
-    int radius = ((CircleRoadWay *)(myModel->roadWay2))->getRadius();
-    Point bigcenter = ((CircleRoadWay *)(myModel->roadWay2))->getCenterPoint();
-    QGraphicsEllipseItem *bigCircle = new QGraphicsEllipseItem(-radius, -radius, 2 * radius, 2 * radius);
-    bigCircle->setPos(bigcenter.x, bigcenter.y);
-        scene->addItem(bigCircle);
-
-    Point center = ((CircleRoadWay*)(myModel->roadWay2))->autoArray[0].getPosition();
-    QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-5, -5, 10, 10);
-    circle->setPos(center.x, center.y);
-    scene->addItem(circle);
+    renderCircleRoadWay((CircleRoadWay *)myModel->roadWay2, scene);
+    renderAuto(myModel->roadWay2->autoArray[0], scene);
 }
 
 Widget::~Widget()
@@ -45,14 +55,7 @@ void Widget::onGenerate()
 {
     scene->clear();
     myModel->step();
-    int radius = ((CircleRoadWay *)(myModel->roadWay2))->getRadius();
-    Point bigcenter = ((CircleRoadWay *)(myModel->roadWay2))->getCenterPoint();
-    QGraphicsEllipseItem *bigCircle = new QGraphicsEllipseItem(-radius, -radius, 2 * radius, 2 * radius);
-    bigCircle->setPos(bigcenter.x, bigcenter.y);
-        scene->addItem(bigCircle);
 
-    Point center = ((CircleRoadWay*)(myModel->roadWay2))->autoArray[0].getPosition();
-    QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-5, -5, 10, 10);
-    circle->setPos(center.x, center.y);
-    scene->addItem(circle);
+    renderCircleRoadWay((CircleRoadWay *)myModel->roadWay2, scene);
+    renderAuto(myModel->roadWay2->autoArray[0], scene);
 }

@@ -26,5 +26,5 @@ void Auto::setPosition(Point newPosition) {
 }
 
 void Auto::step(void *currentRoudWay) {
-    this->setPosition(((RoadWay*)currentRoudWay)->calcOffssetPosition(center, speed));
+    setPosition(((RoadWay*)currentRoudWay)->calcOffssetPosition(center, speed));
 }

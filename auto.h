@@ -33,6 +33,10 @@ public:
     Point getPosition() {
         return center;
     }
+
+    int getWidth() {
+        return width;
+    }
 };
 
 #endif // AUTO_H
