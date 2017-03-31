@@ -30,13 +30,9 @@ public:
 
     void step(void *currentRoudWay);
 
-    Point getPosition() {
-        return center;
-    }
+    Point getPosition();
 
-    int getWidth() {
-        return width;
-    }
+    int getWidth();
 };
 
 #endif // AUTO_H

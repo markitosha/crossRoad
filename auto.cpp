@@ -28,3 +28,11 @@ void Auto::setPosition(Point newPosition) {
 void Auto::step(void *currentRoudWay) {
     setPosition(((RoadWay*)currentRoudWay)->calcOffssetPosition(center, speed));
 }
+
+Point Auto::getPosition() {
+    return center;
+}
+
+int Auto::getWidth() {
+    return width;
+}

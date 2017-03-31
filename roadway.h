@@ -23,10 +23,6 @@ public:
     }
 
     virtual void addAuto(Auto &newAuto) = 0;
-
-   // virtual bool canAddAuto() = 0;
-   // virtual Auto& findNearestAuto(Point point) = 0;
-   // virtual int findMaxSpeed(Point point) = 0;
     virtual Point calcOffssetPosition(Point oldPosition, int speed) = 0;
 };
 
@@ -37,24 +33,11 @@ class LineRoadWay: public RoadWay {
     float lineSin;
 
 public:
-    LineRoadWay(Point entryPoint, Point endPoint) : entryPoint(entryPoint), endPoint(endPoint) {
-        double arctan = atan2(endPoint.y - entryPoint.y, endPoint.x - entryPoint.x);
-        lineCos = cos(arctan);
-        lineSin = sin(arctan);
-    }
+    LineRoadWay(Point entryPoint, Point endPoint);
 
-    Point calcOffssetPosition(Point oldPosition, int speed) {
-        if (speed == 0) {
-            return oldPosition;
-        }
+    Point calcOffssetPosition(Point oldPosition, int speed);
 
-        return Point(oldPosition.x + lineCos * speed, oldPosition.y + lineSin * speed);
-    }
-
-    void addAuto(Auto &newAuto) {
-        newAuto.setPosition(entryPoint);
-        autoArray.push_back(newAuto);
-    }
+    void addAuto(Auto &newAuto);
 
     Point getEntryPoint() {
         return entryPoint;
@@ -71,21 +54,9 @@ class CircleRoadWay: public RoadWay {
     int time;
 
 public:
-    CircleRoadWay(Point centerPoint, float radius)
-        : radius(radius) {
-        this->centerPoint.x = centerPoint.x;
-        this->centerPoint.y = centerPoint.y;
-        time = 0;
-    }
+    CircleRoadWay(Point centerPoint, float radius);
 
-    Point calcOffssetPosition(Point oldPosition, int speed) {
-        if (speed == 0) {
-            return oldPosition;
-        }
-
-        time += 1; // полный круг -- радиус
-        return Point(centerPoint.x + radius * cos(speed / radius * PI * time), centerPoint.y + radius * sin(speed / radius * PI * time));
-    }
+    Point calcOffssetPosition(Point oldPosition, int speed);
 
     void addAuto(Auto &newAuto) {
         autoArray.push_back(newAuto);

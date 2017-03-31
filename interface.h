@@ -15,13 +15,13 @@ namespace Ui {
     class Widget;
 }
 
-class Widget : public QWidget
+class Interface : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Widget(QWidget *parent = 0);
-    ~Widget();
+    explicit Interface(QWidget *parent = 0);
+    ~Interface();
 
 private slots:
     void onGenerate();

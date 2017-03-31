@@ -13,21 +13,11 @@ class Model
 public:
     vector <Road *> roads;
 
-    Model(int roadNum, int roadWayNum, int height, int width) : roadNum(roadNum), height(height), width(width) {
-        auto center = Point(width / 2, height / 2);
-        auto centerCircle = new CircleRoad(center, INNER_RADIUS * MST, roadWayNum);
-        roads.push_back(centerCircle);
+    Model(int roadNum, int roadWayNum, int height, int width);
 
-        roads.push_back(new LineRoad(Point(center.x, height), Point(center.x, center.y + centerCircle->getFullRadius()), roadWayNum, center));
+    void start();
 
-        for (int i = 0; i < roadNum; ++i) {
-           // roads.push_back(new LineRoad(Point(width / 2))
-        }
-    }
-
-    void start() {};
-
-    void step() {};
+    void step();
 };
 
 #endif // MODEL_H

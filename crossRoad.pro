@@ -25,14 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     auto.cpp \
-    mainwidget.cpp \
     roadway.cpp \
     model.cpp \
     road.cpp \
-    line.cpp
+    line.cpp \
+    circle.cpp \
+    interface.cpp
 
 HEADERS  += \
-    mainwidget.h \
     auto.h \
     model.h \
     roadway.h \
@@ -40,7 +40,8 @@ HEADERS  += \
     constants.h \
     road.h \
     line.h \
-    circle.h
+    circle.h \
+    interface.h
 
 FORMS    += \
     mainwidget.ui

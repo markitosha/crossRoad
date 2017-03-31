@@ -1,10 +1,10 @@
-#include "mainwidget.h"
+#include "interface.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Widget au;
+    Interface au;
 
     au.show();
     return a.exec();
