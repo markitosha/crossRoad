@@ -1,17 +1,18 @@
 #include "line.h"
+#include <stdio.h>
 
 Line::Line(Point entry, Point end) {
     if (end.x == entry.x) {
         a = 1;
         c = 0;
-        b = entry.x;
+        b = - entry.x;
     } else if (end.y == entry.y) {
         a = 0;
         c = 1;
         b = entry.y;
     } else {
         a = (end.y - entry.y) / (end.x - entry.x);
-        b = a * (entry.x + entry.y);
+        b = a * entry.x - entry.y;
         c = 1;
     }
 }
@@ -22,7 +23,7 @@ Line Line::perpendicular(Point p) {
     }
 
     if (a == 0) {
-        return Line(1, p.x, 0);
+        return Line(1, - p.x, 0);
     }
 
     return Line(- 1 / a, - 1 / a * p.x + p.y);
@@ -40,11 +41,11 @@ Point Line::crossLine(Line line) {
     }
 
     if (a == 0) {
-        x = line.b;
+        x = - line.b;
     }
 
     if (line.a == 0) {
-        x = b;
+        x = - b;
     }
 
     if (x == -100) {

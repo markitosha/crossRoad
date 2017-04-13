@@ -7,7 +7,7 @@ Road::Road(int roadWayNum) : roadWayNum(roadWayNum) {
 LineRoad::LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point center) : Road(roadWayNum), entryPoint(entryPoint), endPoint(endPoint) {
     Line centralLine(entryPoint, endPoint);
     Line perpendicular = centralLine.perpendicular(entryPoint);
-    Circle mainCircle(center.x, center.y, center.distance(endPoint));
+    Circle mainCircle(center.distance(endPoint), center.x, center.y);
 
     for (int i = 0, offset =  - width / 2 - width * (roadWayNum / 2 - 1); i < roadWayNum; ++i, offset += width) {
         LineRoadWay * newRoadWay;

@@ -58,6 +58,7 @@ void renderCircleRoad(CircleRoad * road, QGraphicsScene *scene) {
 }
 
 void renderModel(Model * model, QGraphicsScene *scene) {
+    scene->addRect(scene->sceneRect());
     renderCircleRoad((CircleRoad *)model->roads[0], scene);
 
     for (int i = 1; i < model->roads.size(); ++i) {
