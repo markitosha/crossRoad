@@ -14,6 +14,7 @@ Auto::Auto(int speed, int startRoad,int finishRoad) :
     currentRoad = startRoad;
     width = WIDTH_AUTO;
     center = Point();
+    nextRoad = 0;
 }
 
 void Auto::changeSpeed(int newSpeed) {
@@ -61,34 +62,24 @@ void Auto::setModel(void * model) {
     angle = k / ((float)speed) * radius * asin((centerY - endY.y) / radius);
 }
 
-void Auto::step(void *currentRoudWay) {
-    Road * currentRoadPointer = ((Model*)model)->roads[currentRoad];
-    Road * startRoadPointer = ((Model*)model)->roads[startRoad];
-    Road * finishRoadPointer = ((Model*)model)->roads[finishRoad];
-    RoadWay * roadWay = (RoadWay*)currentRoudWay;
-    int nextRoad = 0;
+void Auto::step(void *currentRoadWay) {
+    RoadWay * roadWay = (RoadWay*)currentRoadWay;
 
-    if (currentRoadPointer != finishRoadPointer) {
-        if (currentRoadPointer == startRoadPointer) {
-            nextRoad = 0;
-        } else {
-            nextRoad = finishRoad;
-        }
-
+    if (nextRoad != -1) {
         Road * nextRoadPointer = ((Model*)model)->roads[nextRoad];
 
         RoadWay * getIn = nextRoadPointer->canGetIn(this);
 
          if (getIn) {
              currentRoad = nextRoad;
-             currentRoudWay = getIn;
+             nextRoad = nextRoad == 0 ? finishRoad : -1;
              roadWay->deleteAuto(this);
              roadWay = getIn;
              roadWay->addAuto(this);
          }
     }
 
-    setPosition(((RoadWay*)currentRoudWay)->calcOffssetPosition(center, speed, angle++));
+    setPosition(roadWay->calcOffssetPosition(center, speed, angle++));
 }
 
 Point Auto::getPosition() {

@@ -30,10 +30,7 @@ Model::Model(int roadNum, int roadWayNum, int height, int width) : roadNum(roadN
 void Model::generateAuto() {
     int startRoad = rand() % 5 + 1;
     int speed = rand() % 50 + 10;
-    int finishRoad = 0;
-    do {
-        finishRoad = rand() % 5 + 1;
-    } while (finishRoad == startRoad);
+    int finishRoad = rand() % 5 + 1;
     Auto * newAuto = new Auto(speed, startRoad, finishRoad);
     roads[startRoad] -> roadWays[1] -> addAuto(newAuto);
     newAuto->setModel(this);

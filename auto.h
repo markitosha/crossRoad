@@ -19,6 +19,7 @@ class Auto {
     int startRoad;
     int finishRoad;
     int currentRoad;
+    int nextRoad;
     int width;
     void * model;
     float angle;
@@ -32,7 +33,7 @@ public:
 
     void setModel(void *model);
 
-    void step(void *currentRoudWay);
+    void step(void *currentRoadWay);
 
     Point getPosition();
 
