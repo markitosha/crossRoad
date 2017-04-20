@@ -32,6 +32,7 @@ private:
     QTimer *animationTimer;
     QTimer *generatorTimer;
     Model *myModel;
+    int stepCounter;
 };
 
 #endif // WIDGET_H

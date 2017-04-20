@@ -12,7 +12,7 @@ Line::Line(Point entry, Point end) {
         b = entry.y;
     } else {
         a = (end.y - entry.y) / (end.x - entry.x);
-        b = a * entry.x - entry.y;
+        b = - a * entry.x + entry.y;
         c = 1;
     }
 }
@@ -26,7 +26,7 @@ Line Line::perpendicular(Point p) {
         return Line(1, - p.x, 0);
     }
 
-    return Line(- 1 / a, - 1 / a * p.x + p.y);
+    return Line(- 1 / a, 1 / a * p.x + p.y, 1);
 }
 
 Point Line::crossLine(Line line) {

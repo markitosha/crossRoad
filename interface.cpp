@@ -4,9 +4,9 @@
 #include <iostream>
 
 
-void renderAuto(Auto &aut, QGraphicsScene *scene) {
-    Point center = aut.getPosition();
-    int width = aut.getWidth() * MST;
+void renderAuto(Auto *aut, QGraphicsScene *scene) {
+    Point center = aut->getPosition();
+    int width = aut->getWidth() * MST;
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-width / 2, -width / 2, width, width);
     circle->setPos(center.x, center.y);
     scene->addItem(circle);
@@ -58,7 +58,6 @@ void renderCircleRoad(CircleRoad * road, QGraphicsScene *scene) {
 }
 
 void renderModel(Model * model, QGraphicsScene *scene) {
-    scene->addRect(scene->sceneRect());
     renderCircleRoad((CircleRoad *)model->roads[0], scene);
 
     for (int i = 1; i < model->roads.size(); ++i) {
@@ -74,16 +73,16 @@ Interface::Interface(QWidget *parent) :
     scene = new QGraphicsScene(0,0,500,500, this);
     scene->setBackgroundBrush(Qt::green);
     ui->graphicsView->setScene(scene);
-    scene->addRect(scene->sceneRect());
 
     animationTimer = new QTimer(this);
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(onGenerate()));
-    animationTimer->start(100);
+    animationTimer->start(1000 / FPS);
 
     myModel = new Model(1, 2, 500, 500);
     myModel->start();
 
     renderModel(myModel, scene);
+    stepCounter = 0;
 }
 
 Interface::~Interface()

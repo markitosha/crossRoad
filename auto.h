@@ -20,6 +20,8 @@ class Auto {
     int finishRoad;
     int currentRoad;
     int width;
+    void * model;
+    float angle;
 
 public:
     Auto(int speed = 10, int startRoad = 0, int finishRoad = 0);
@@ -28,11 +30,17 @@ public:
 
     void setPosition(Point newPosition);
 
+    void setModel(void *model);
+
     void step(void *currentRoudWay);
 
     Point getPosition();
 
     int getWidth();
+
+    int getSpeed() {
+        return speed;
+    }
 };
 
 #endif // AUTO_H

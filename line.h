@@ -8,7 +8,7 @@ struct Line {
     float b;
     float c;
 
-    Line(float a = 0, float b = 0, float c = 1) : a(a), b(b), c(1) {}
+    Line(float a = 0, float b = 0, float c = 1) : a(a), b(b), c(c) {}
 
     Line(Point entry, Point end);
 

@@ -16,14 +16,26 @@ enum Direct {
 class RoadWay
 {
 public:
-    vector<Auto> autoArray;
+    vector<Auto *> autoArray;
 
     RoadWay() {
         autoArray.clear();
     }
 
-    virtual void addAuto(Auto &newAuto) = 0;
-    virtual Point calcOffssetPosition(Point oldPosition, int speed) = 0;
+    virtual void addAuto(Auto *newAuto) = 0;
+    virtual Point calcOffssetPosition(Point oldPosition, int speed, float angle) = 0;
+
+    void deleteAuto(Auto *oldAuto) {
+        int pos;
+
+        for (int i = 0; i < autoArray.size(); ++i) {
+            if (autoArray[i] == oldAuto) {
+                pos = i;
+                break;
+            }
+        }
+        autoArray.erase(autoArray.begin() + pos);
+    }
 };
 
 class LineRoadWay: public RoadWay {
@@ -35,9 +47,9 @@ class LineRoadWay: public RoadWay {
 public:
     LineRoadWay(Point entryPoint, Point endPoint);
 
-    Point calcOffssetPosition(Point oldPosition, int speed);
+    Point calcOffssetPosition(Point oldPosition, int speed, float angle);
 
-    void addAuto(Auto &newAuto);
+    void addAuto(Auto *newAuto);
 
     Point getEntryPoint() {
         return entryPoint;
@@ -56,9 +68,9 @@ class CircleRoadWay: public RoadWay {
 public:
     CircleRoadWay(Point centerPoint, float radius);
 
-    Point calcOffssetPosition(Point oldPosition, int speed);
+    Point calcOffssetPosition(Point oldPosition, int speed, float angle);
 
-    void addAuto(Auto &newAuto) {
+    void addAuto(Auto *newAuto) {
         autoArray.push_back(newAuto);
     }
 
