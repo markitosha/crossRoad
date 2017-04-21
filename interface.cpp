@@ -82,7 +82,7 @@ void Interface::renderCircleRoad(CircleRoad * road) {
         renderCircleRoadWay((CircleRoadWay *)road->roadWays[i]);
     }
 
-    int innerRadius = road->getInnerRadius();
+    int innerRadius = road->getInnerRadius() + MST * WIDTH_ROADWAY;
     Point center = road->getCenterPoint();
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-innerRadius, -innerRadius, 2 * innerRadius, 2 * innerRadius);
     circle->setPos(center.x, center.y);

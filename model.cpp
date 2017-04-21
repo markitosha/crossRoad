@@ -11,7 +11,7 @@ void Model::init(int roadNm, int min, int max, int autoPerMin) {
     height = HEIGHT_SCREEN;
     width = WIDTH_SCREEN;
     auto center = Point(width / 2, height / 2);
-    auto centerCircle = new CircleRoad(center, INNER_RADIUS * MST, roadWayNum);
+    auto centerCircle = new CircleRoad(center, INNER_RADIUS * MST, 2);
     roads.push_back(centerCircle);
     float   angl2 = 5 * PI / 6,
             angl3 = 7 * PI / 6,
