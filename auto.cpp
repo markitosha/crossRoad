@@ -43,7 +43,7 @@ void Auto::setModel(void * model) {
     Point endY = myRoadWay->getEndPoint();
     switch (startRoad) {
     case 1:
-        k = 80.0;
+        k = 82.0;
         break;
     case 2:
         k = 105.0;
