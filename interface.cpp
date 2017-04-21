@@ -12,7 +12,7 @@ void Interface::renderAuto(Auto *aut) {
         color = Qt::red;
         break;
     case GREEN:
-        color = Qt::darkMagenta;
+        color = QColor(0, 198, 0);
         break;
     case YELLOW:
         color = Qt::yellow;
@@ -44,7 +44,7 @@ void Interface::renderAuto(Auto *aut) {
 void Interface::renderLineRoadWay(LineRoadWay *roadWay, bool open) {
     Point entryPoint = roadWay->getEntryPoint();
     Point endPoint = roadWay->getEndPoint();
-    QPen pen(QColor(open ? Qt::gray : Qt::darkRed), WIDTH_ROADWAY * MST);
+    QPen pen(QColor(open ? QColor(130, 130, 130) : Qt::darkRed), WIDTH_ROADWAY * MST);
     scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y, pen);
 
     for (int i = 0; i < roadWay->autoArray.size(); ++i) {
@@ -56,9 +56,10 @@ void Interface::renderCircleRoadWay(CircleRoadWay *roadWay) {
     int radius = roadWay->getRadius() + MST * WIDTH_ROADWAY / 2;
     Point center = roadWay->getCenterPoint();
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-radius, -radius, 2 * radius, 2 * radius);
+    QPen pen(Qt::white, 1, Qt::DashLine);
     circle->setPos(center.x, center.y);
-    circle->setBrush(Qt::gray);
-    circle->setPen(QColor(Qt::white));
+    circle->setBrush(QColor(130, 130, 130));
+    circle->setPen(pen);
     circle->setZValue(900);
     scene->addItem(circle);
 
@@ -86,7 +87,7 @@ void Interface::renderCircleRoad(CircleRoad * road) {
     Point center = road->getCenterPoint();
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-innerRadius, -innerRadius, 2 * innerRadius, 2 * innerRadius);
     circle->setPos(center.x, center.y);
-    circle->setBrush(Qt::green);
+    circle->setBrush(QColor(180, 247, 196));
     circle->setPen(QColor(Qt::white));
     circle->setZValue(950);
     scene->addItem(circle);
@@ -100,18 +101,13 @@ void Interface::renderModel(Model * model) {
     }
  }
 
-
-
-
-
-
 Interface::Interface(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
     scene = new QGraphicsScene(0,0,HEIGHT_SCREEN,WIDTH_SCREEN, this);
-    scene->setBackgroundBrush(Qt::green);
+    scene->setBackgroundBrush(QColor(180, 247, 196));
     ui->graphicsView->setScene(scene);
 
     animationTimer = new QTimer(this);
