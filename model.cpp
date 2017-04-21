@@ -17,13 +17,13 @@ Model::Model(int roadNum, int roadWayNum, int height, int width) : roadNum(roadN
     roads.push_back(new LineRoad(Point(center.x, 0), Point(center.x, center.y - rad), roadWayNum, center, OUT)); // 2 - верх
     roads.push_back(new LineRoad(Point(0, center.y * (1 + sin(angl2))), // 3 - лево низ
                                  Point(center.x + rad * cos(angl2), center.y + rad * sin(angl2)),
-                                 roadWayNum, center));
+                                 roadWayNum, center, IN, false));
     roads.push_back(new LineRoad(Point(0, center.y * (1 + sin(angl3))), // 4 -- лево верх
                                  Point(center.x + rad * cos(angl3), center.y + rad * sin(angl3)),
                                  roadWayNum, center));
     roads.push_back(new LineRoad(Point(width, center.y * (1 + sin(angl2))), // 5 -- право низ
                                  Point(center.x - rad * cos(angl2), center.y + rad * sin(angl2)),
-                                 roadWayNum, center, OUT));
+                                 roadWayNum, center, OUT, false));
     roads.push_back(new LineRoad(Point(width, center.y * (1 + sin(angl3))), // 6 -- право верх
                                  Point(center.x - rad * cos(angl3), center.y + rad * sin(angl3)),
                                  roadWayNum, center, OUT));
@@ -39,11 +39,15 @@ void Model::generateAuto() {
         if (++count > 10000) {
             return;
         }
-    } while (!roads[startRoad]->roadWays[1]->isEmpty(NULL));
+    } while (!roads[startRoad]->roadWays[1]->isEmpty(NULL) || !roads[startRoad]->isOpen());
 
+    count = 0;
     do {
         finishRoad = rand() % 6 + 1;
-    } while (false);
+        if (++count > 10000) {
+            return;
+        }
+    } while (!roads[finishRoad]->isOpen());
 
     int speed = rand() % (maxSpeed - minSpeed) + minSpeed;
     Auto * newAuto = new Auto(speed, startRoad, finishRoad);

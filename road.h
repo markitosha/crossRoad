@@ -27,6 +27,10 @@ public:
     virtual bool waitingEmpty(Auto *aut) = 0;
     virtual bool rebaseStarted(Auto *aut) = 0;
     virtual bool isEmpty(Auto *aut) = 0;
+
+    bool isOpen() {
+        return open;
+    }
 };
 
 class LineRoad : public Road {
@@ -34,7 +38,7 @@ class LineRoad : public Road {
     Point endPoint;
 
 public:
-    LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point center, Dir pos = IN);
+    LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point center, Dir pos = IN, bool open = true);
 
     Point getEntryPoint() {
         return entryPoint;

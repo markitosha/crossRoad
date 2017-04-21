@@ -67,7 +67,7 @@ void renderLineRoad(LineRoad * road, QGraphicsScene *scene ) {
 
     Point entryPoint = road->getEntryPoint();
     Point endPoint = road->getEndPoint();
-    scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y, QPen(Qt::white));
+    scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y, road->isOpen() ? QPen(Qt::white) : QPen(Qt::red));
 }
 
 void renderCircleRoad(CircleRoad * road, QGraphicsScene *scene) {

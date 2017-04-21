@@ -4,7 +4,7 @@ Road::Road(int roadWayNum, bool open) : roadWayNum(roadWayNum), open(open) {
     width = WIDTH_ROADWAY * MST;
 }
 
-LineRoad::LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point center, Dir pos) : Road(roadWayNum), entryPoint(entryPoint), endPoint(endPoint) {
+LineRoad::LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point center, Dir pos, bool open) : Road(roadWayNum, open), entryPoint(entryPoint), endPoint(endPoint) {
     Line centralLine(entryPoint, endPoint);
     Line perpendicular = centralLine.perpendicular(entryPoint);
     Circle mainCircle(center.distance(endPoint), center.x, center.y);
@@ -34,6 +34,8 @@ LineRoad::LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point cent
 }
 
 CircleRoad::CircleRoad(Point centerPoint, int innerCircleR, int roadWayNum) : Road(roadWayNum), centerPoint(centerPoint), innerCircleRadius(innerCircleR) {
+    open = true;
+
     for (int i = 0, offset = innerCircleRadius + width / 2; i < roadWayNum; ++i, offset += width) {
         CircleRoadWay * newRoadWay;
 
