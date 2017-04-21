@@ -4,6 +4,8 @@
 Model::Model(int roadNum, int roadWayNum, int height, int width) : roadNum(roadNum), height(height), width(width) {
     stepCounter = 0;
     autoPerMinute = 100;
+    minSpeed = 10;
+    maxSpeed = 100;
     auto center = Point(width / 2, height / 2);
     auto centerCircle = new CircleRoad(center, INNER_RADIUS * MST, roadWayNum);
     roads.push_back(centerCircle);
@@ -28,9 +30,22 @@ Model::Model(int roadNum, int roadWayNum, int height, int width) : roadNum(roadN
 }
 
 void Model::generateAuto() {
-    int startRoad = rand() % 5 + 1;
-    int speed = rand() % 50 + 10;
-    int finishRoad = rand() % 5 + 1;
+    int startRoad = 0;
+    int finishRoad = 0;
+    int count = 0;
+
+    do {
+        startRoad = rand() % 6 + 1;
+        if (++count > 10000) {
+            return;
+        }
+    } while (!roads[startRoad]->roadWays[1]->isEmpty(NULL));
+
+    do {
+        finishRoad = rand() % 6 + 1;
+    } while (false);
+
+    int speed = rand() % (maxSpeed - minSpeed) + minSpeed;
     Auto * newAuto = new Auto(speed, startRoad, finishRoad);
     roads[startRoad] -> roadWays[1] -> addAuto(newAuto);
     newAuto->setModel(this);

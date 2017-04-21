@@ -4,7 +4,7 @@
 #include "point.h"
 
 enum Color {
-    RED, GREEN, YELLOW
+    RED, GREEN, YELLOW, BLACK
 };
 
 enum State {
@@ -21,13 +21,18 @@ class Auto {
     int currentRoad;
     int nextRoad;
     int width;
+    int minSpeed;
+    int maxSpeed;
     void * model;
     float angle;
+    float k;
+
+    void * checkRoadWay(void* roadWay);
+    void checkSpeed(void *roadWay);
+    void changeSpeed(int newSpeed);
 
 public:
     Auto(int speed = 10, int startRoad = 0, int finishRoad = 0);
-
-    void changeSpeed(int newSpeed);
 
     void setPosition(Point newPosition);
 
@@ -41,6 +46,10 @@ public:
 
     int getSpeed() {
         return speed;
+    }
+
+    Color getColor() {
+        return color;
     }
 };
 

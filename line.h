@@ -15,6 +15,10 @@ struct Line {
     Line perpendicular(Point p);
 
     Point crossLine(Line line);
+
+    float apply(Point p) {
+        return c * p.y - a * p.x - b;
+    }
 };
 
 #endif // LINE_H

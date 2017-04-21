@@ -23,6 +23,10 @@ public:
     vector<RoadWay *> roadWays;
     Road(int roadWayNum, bool open = true);
     virtual RoadWay * canGetIn(Auto *aut) = 0;
+    virtual bool soonRebase(Auto *aut) = 0;
+    virtual bool waitingEmpty(Auto *aut) = 0;
+    virtual bool rebaseStarted(Auto *aut) = 0;
+    virtual bool isEmpty(Auto *aut) = 0;
 };
 
 class LineRoad : public Road {
@@ -42,11 +46,42 @@ public:
 
     RoadWay * canGetIn(Auto *aut) {
         LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
-        if (newRoadWay->getEntryPoint().distance(aut->getPosition()) <= aut->getWidth()) {
+        float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
+        float width = aut->getWidth();
+
+        if (distance <= width) {
             return newRoadWay;
         }
 
         return NULL;
+    }
+
+    bool isEmpty(Auto *aut) {
+        LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
+        return newRoadWay->isEmpty(aut);
+    }
+
+    bool soonRebase(Auto *aut) {
+        LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
+        float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
+        float maxWidth = aut->getWidth() * MST * 1.5;
+        float minWidth = aut->getWidth() * MST * 0.5;
+        return distance <= maxWidth && distance >= minWidth;
+    }
+
+    bool waitingEmpty(Auto *aut) {
+        LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
+        float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
+        float maxWidth = aut->getWidth() * MST * 0.5;
+        float minWidth = aut->getWidth() * MST * 0.4;
+        return distance <= maxWidth && distance >= minWidth;
+    }
+
+    bool rebaseStarted(Auto *aut) {
+        LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
+        float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
+        float minWidth = aut->getWidth() * MST * 0.4;
+        return distance < minWidth;
     }
 };
 
@@ -70,11 +105,37 @@ public:
     }
 
     RoadWay * canGetIn(Auto *aut) {
-        if (centerPoint.distance(aut->getPosition()) <= getFullRadius()) {
+        float distance = centerPoint.distance(aut->getPosition());
+
+        if (distance <= aut->getWidth() + getFullRadius()) {
             return this->roadWays[1];
         }
 
         return NULL;
+    }
+
+    bool isEmpty(Auto *aut) {
+        return this->roadWays[1]->isEmpty(aut);
+    }
+
+    bool soonRebase(Auto *aut) {
+        float distance = centerPoint.distance(aut->getPosition());
+        float maxWidth = aut->getWidth() * MST * 2 + getFullRadius();
+        float minWidth = aut->getWidth() * MST + getFullRadius();
+        return distance <= maxWidth && distance >= minWidth;
+    }
+
+    bool waitingEmpty(Auto *aut) {
+        float distance = centerPoint.distance(aut->getPosition());
+        float maxWidth = aut->getWidth() * MST * 1.5 + getFullRadius();
+        float minWidth = aut->getWidth() * MST + getFullRadius();
+        return distance <= maxWidth && distance >= minWidth;
+    }
+
+    bool rebaseStarted(Auto *aut) {
+        float distance = centerPoint.distance(aut->getPosition());
+        float minWidth = aut->getWidth() * MST + getFullRadius();
+        return distance < minWidth;
     }
 };
 

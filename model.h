@@ -14,6 +14,9 @@ class Model
     int autoPerMinute;
 
 public:
+    int maxSpeed;
+    int minSpeed;
+
     vector <Road *> roads;
 
     Model(int roadNum, int roadWayNum, int height, int width);

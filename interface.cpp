@@ -3,13 +3,39 @@
 #include "constants.h"
 #include <iostream>
 
-
 void renderAuto(Auto *aut, QGraphicsScene *scene) {
     Point center = aut->getPosition();
     int width = aut->getWidth() * MST;
+    QColor color;
+    switch (aut->getColor()) {
+    case RED:
+        color = Qt::red;
+        break;
+    case GREEN:
+        color = Qt::darkMagenta;
+        break;
+    case YELLOW:
+        color = Qt::yellow;
+        break;
+    case BLACK:
+        color = Qt::darkRed;
+        break;
+    default:
+        color = Qt::green;
+    }
+
+    if (aut->getSpeed() < 0) {
+        color = Qt::black;
+    }
+
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-width / 2, -width / 2, width, width);
+    QString speed = QString::number(aut->getSpeed());
+    QGraphicsTextItem *text = new QGraphicsTextItem(speed);
+    text->setPos(center.x - width / 2, center.y - width / 2);
     circle->setPos(center.x, center.y);
+    circle->setBrush(color);
     scene->addItem(circle);
+    scene->addItem(text);
 }
 
 void renderLineRoadWay(LineRoadWay *roadWay, QGraphicsScene *scene) {
