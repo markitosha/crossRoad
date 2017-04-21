@@ -15,132 +15,91 @@ enum Dir {
 class Road
 {
 protected:
-    int width;
-    int roadWayNum;
-    bool open;
+    int width; // ширина
+    int roadWayNum; // номер
+    bool open; // открыта ли
 
 public:
-    vector<RoadWay *> roadWays;
+    vector<RoadWay *> roadWays; // массив полос
+    // конструктор
     Road(int roadWayNum, bool open = true);
+    // можно ли войти
     virtual RoadWay * canGetIn(Auto *aut) = 0;
+    // ????
     virtual bool soonRebase(Auto *aut) = 0;
+    // ???
     virtual bool waitingEmpty(Auto *aut) = 0;
+    // ??
     virtual bool rebaseStarted(Auto *aut) = 0;
+    // пустая ли
     virtual bool isEmpty(Auto *aut) = 0;
-
+    // открыта ли
     bool isOpen() {
         return open;
     }
 };
 
 class LineRoad : public Road {
-    Point entryPoint;
-    Point endPoint;
+    Point entryPoint; // начало середней полосы дороги
+    Point endPoint; // конец средней полосы дороги
 
 public:
+    // конструктор
     LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point center, Dir pos = IN, bool open = true);
-
+    // получить входную точку
     Point getEntryPoint() {
         return entryPoint;
     }
-
+    // получить выходную точку
     Point getEndPoint() {
         return endPoint;
     }
-
-    RoadWay * canGetIn(Auto *aut) {
-        LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
-        float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
-        float width = aut->getWidth();
-
-        if (distance <= width) {
-            return newRoadWay;
-        }
-
-        return NULL;
-    }
-
+    // на какую полосу можно заехать
+    RoadWay * canGetIn(Auto *aut);
+    // пустая ли
     bool isEmpty(Auto *aut) {
         LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
         return newRoadWay->isEmpty(aut);
     }
 
-    bool soonRebase(Auto *aut) {
-        LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
-        float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
-        float maxWidth = aut->getWidth() * MST * 1.5;
-        float minWidth = aut->getWidth() * MST * 0.5;
-        return distance <= maxWidth && distance >= minWidth;
-    }
+    bool soonRebase(Auto *aut);
 
-    bool waitingEmpty(Auto *aut) {
-        LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
-        float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
-        float maxWidth = aut->getWidth() * MST * 0.5;
-        float minWidth = aut->getWidth() * MST * 0.4;
-        return distance <= maxWidth && distance >= minWidth;
-    }
+    bool waitingEmpty(Auto *aut);
 
-    bool rebaseStarted(Auto *aut) {
-        LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
-        float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
-        float minWidth = aut->getWidth() * MST * 0.4;
-        return distance < minWidth;
-    }
+    bool rebaseStarted(Auto *aut);
 };
 
 class CircleRoad : public Road {
-    Point centerPoint;
-    int innerCircleRadius;
+    Point centerPoint; // центр круговой дороги
+    int innerCircleRadius; // радиус внутренней окружности
 
 public:
+    // конструктор
     CircleRoad(Point centerPoint, int innerCircleR, int roadWayNum);
-
+    // получить радиус внутреннего круга
     int getInnerRadius() {
         return innerCircleRadius;
     }
-
+    // получит координаты центра
     Point getCenterPoint() {
         return centerPoint;
     }
-
+    // получить полный радиус
     float getFullRadius() {
         return ((CircleRoadWay*)roadWays[1])->getRadius();
     }
-
-    RoadWay * canGetIn(Auto *aut) {
-        float distance = centerPoint.distance(aut->getPosition());
-
-        if (distance <= aut->getWidth() + getFullRadius()) {
-            return this->roadWays[1];
-        }
-
-        return NULL;
-    }
-
+    // можно ли войти на полосу
+    RoadWay * canGetIn(Auto *aut);
+    // пустая ли
     bool isEmpty(Auto *aut) {
         return this->roadWays[1]->isEmpty(aut);
     }
 
-    bool soonRebase(Auto *aut) {
-        float distance = centerPoint.distance(aut->getPosition());
-        float maxWidth = aut->getWidth() * MST * 2 + getFullRadius();
-        float minWidth = aut->getWidth() * MST + getFullRadius();
-        return distance <= maxWidth && distance >= minWidth;
-    }
+    bool soonRebase(Auto *aut);
 
-    bool waitingEmpty(Auto *aut) {
-        float distance = centerPoint.distance(aut->getPosition());
-        float maxWidth = aut->getWidth() * MST * 1.5 + getFullRadius();
-        float minWidth = aut->getWidth() * MST + getFullRadius();
-        return distance <= maxWidth && distance >= minWidth;
-    }
+    bool waitingEmpty(Auto *aut);
 
-    bool rebaseStarted(Auto *aut) {
-        float distance = centerPoint.distance(aut->getPosition());
-        float minWidth = aut->getWidth() * MST + getFullRadius();
-        return distance < minWidth;
-    }
+    bool rebaseStarted(Auto *aut);
 };
 
 #endif // ROAD_H

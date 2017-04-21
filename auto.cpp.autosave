@@ -88,7 +88,7 @@ void * Auto::checkRoadWay(void *roadWay) {
                     ++waitingTime;
                 }
                 if (waitingTime > MAX_WAITING_TIME) {
-                    changeSpeed(maxSpeed * 2 / 3);
+                    changeSpeed(maxSpeed * 4 / 5);
                 }
             }
         }
@@ -121,7 +121,7 @@ void Auto::checkSpeed(void *roadWay) {
         }
     } else {
         if (speed == 0) {
-            changeSpeed(maxSpeed * 2 / 3);
+            changeSpeed(maxSpeed * 4 / 5);
             waitingTime = 0;
         }
 

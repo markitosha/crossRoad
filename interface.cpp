@@ -41,10 +41,11 @@ void renderAuto(Auto *aut, QGraphicsScene *scene) {
     scene->addItem(text);
 }
 
-void renderLineRoadWay(LineRoadWay *roadWay, QGraphicsScene *scene) {
+void renderLineRoadWay(LineRoadWay *roadWay, QGraphicsScene *scene, bool open = true) {
     Point entryPoint = roadWay->getEntryPoint();
     Point endPoint = roadWay->getEndPoint();
-    scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y);
+    QPen pen(QColor(open ? Qt::gray : Qt::darkRed), WIDTH_ROADWAY * MST);
+    scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y, pen);
 
     for (int i = 0; i < roadWay->autoArray.size(); ++i) {
         renderAuto(roadWay->autoArray[i], scene);
@@ -68,7 +69,7 @@ void renderCircleRoadWay(CircleRoadWay *roadWay, QGraphicsScene *scene) {
 
 void renderLineRoad(LineRoad * road, QGraphicsScene *scene ) {
     for (int i = 0; i < road->roadWays.size(); ++i) {
-        renderLineRoadWay((LineRoadWay *)road->roadWays[i], scene);
+        renderLineRoadWay((LineRoadWay *)road->roadWays[i], scene, road->isOpen());
     }
 
     Point entryPoint = road->getEntryPoint();
@@ -104,7 +105,7 @@ Interface::Interface(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    scene = new QGraphicsScene(0,0,500,500, this);
+    scene = new QGraphicsScene(0,0,HEIGHT_SCREEN,WIDTH_SCREEN, this);
     scene->setBackgroundBrush(Qt::green);
     ui->graphicsView->setScene(scene);
 

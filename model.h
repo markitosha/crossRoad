@@ -11,49 +11,40 @@ enum State {
 
 class Model
 {
-    int roadNum;
-    int height;
-    int width;
-    int autoPerMinute;
-    int stepCounter;
+    int roadNum; // количество дорог
+    int height; // высота модели
+    int width; // ширина модели
+    int autoPerMinute; // частота генерации машин
+    int stepCounter; // счетчик шагов
 
+    // инициализация модели
     void init(int roadNm, int min, int max, int autoPerMin);
 
 public:
-    int maxSpeed;
-    int minSpeed;
-    State state;
+    int maxSpeed; // максимально возможная скорость машины
+    int minSpeed; // минимально возможная скорость машины ???
+    State state; // состояние модели (пауза, стоп, плей ???)
 
-    vector <Road *> roads;
+    vector <Road *> roads; // массив дорог
 
+    // конструктор по умолчанию
     Model() {
         state = STOP;
     }
 
+    // начало работы
     void start(int roadNm, int min, int max, int autoPerMin);
-
+    // шаг
     void step();
-
+    // остановка
     void stop();
-
+    // получить круговую дорогу
     CircleRoad * getCircleRoad() {
         return (CircleRoad*)roads[0];
     }
-
-    RoadWay * getMyRoadWay(Auto * aut) {
-        for(int i = 0; i < roads.size(); ++i) {
-            Road *road = roads[i];
-            for(int i = 0; i < road->roadWays.size(); ++i) {
-                RoadWay *roadWay = road->roadWays[i];
-                for(int i = 0; i < roadWay->autoArray.size(); ++i) {
-                    if (roadWay->autoArray[i] == aut) {
-                        return roadWay;
-                    }
-                }
-            }
-        }
-    }
-
+    // получить мою полосу
+    RoadWay * getMyRoadWay(Auto * aut);
+    // сгенерировать машину
     void generateAuto();
 };
 

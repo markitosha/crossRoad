@@ -44,3 +44,68 @@ CircleRoad::CircleRoad(Point centerPoint, int innerCircleR, int roadWayNum) : Ro
         roadWays.push_back(newRoadWay);
     }
 }
+
+RoadWay * LineRoad::canGetIn(Auto *aut) {
+    LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
+    float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
+    float width = aut->getWidth();
+
+    if (distance <= width) {
+        return newRoadWay;
+    }
+
+    return NULL;
+}
+
+bool LineRoad::soonRebase(Auto *aut) {
+    LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
+    float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
+    float maxWidth = aut->getWidth() * MST * 1.5;
+    float minWidth = aut->getWidth() * MST * 0.5;
+    return distance <= maxWidth && distance >= minWidth;
+}
+
+bool LineRoad::waitingEmpty(Auto *aut) {
+    LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
+    float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
+    float maxWidth = aut->getWidth() * MST * 0.5;
+    float minWidth = aut->getWidth() * MST * 0.4;
+    return distance <= maxWidth && distance >= minWidth;
+}
+
+bool LineRoad::rebaseStarted(Auto *aut) {
+    LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
+    float distance = newRoadWay->getEntryPoint().distance(aut->getPosition());
+    float minWidth = aut->getWidth() * MST * 0.4;
+    return distance < minWidth;
+}
+
+RoadWay * CircleRoad::canGetIn(Auto *aut) {
+    float distance = centerPoint.distance(aut->getPosition());
+
+    if (distance <= aut->getWidth() + getFullRadius()) {
+        return this->roadWays[1];
+    }
+
+    return NULL;
+}
+
+bool CircleRoad::soonRebase(Auto *aut) {
+    float distance = centerPoint.distance(aut->getPosition());
+    float maxWidth = aut->getWidth() * MST * 2 + getFullRadius();
+    float minWidth = aut->getWidth() * MST + getFullRadius();
+    return distance <= maxWidth && distance >= minWidth;
+}
+
+bool CircleRoad::waitingEmpty(Auto *aut) {
+    float distance = centerPoint.distance(aut->getPosition());
+    float maxWidth = aut->getWidth() * MST * 1.5 + getFullRadius();
+    float minWidth = aut->getWidth() * MST + getFullRadius();
+    return distance <= maxWidth && distance >= minWidth;
+}
+
+bool CircleRoad::rebaseStarted(Auto *aut) {
+    float distance = centerPoint.distance(aut->getPosition());
+    float minWidth = aut->getWidth() * MST + getFullRadius();
+    return distance < minWidth;
+}

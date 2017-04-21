@@ -8,8 +8,8 @@ void Model::init(int roadNm, int min, int max, int autoPerMin) {
     minSpeed = min;
     maxSpeed = max;
     roadNum = roadNm;
-    height = 500;
-    width = 500;
+    height = HEIGHT_SCREEN;
+    width = WIDTH_SCREEN;
     auto center = Point(width / 2, height / 2);
     auto centerCircle = new CircleRoad(center, INNER_RADIUS * MST, roadWayNum);
     roads.push_back(centerCircle);
@@ -104,6 +104,20 @@ void Model::step() {
                 RoadWay *roadWay = road->roadWays[i];
                 for(int i = 0; i < roadWay->autoArray.size(); ++i) {
                     roadWay->autoArray[i]->step(roadWay);
+                }
+            }
+        }
+    }
+}
+
+RoadWay * Model::getMyRoadWay(Auto * aut) {
+    for(int i = 0; i < roads.size(); ++i) {
+        Road *road = roads[i];
+        for(int i = 0; i < road->roadWays.size(); ++i) {
+            RoadWay *roadWay = road->roadWays[i];
+            for(int i = 0; i < roadWay->autoArray.size(); ++i) {
+                if (roadWay->autoArray[i] == aut) {
+                    return roadWay;
                 }
             }
         }

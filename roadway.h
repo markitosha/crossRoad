@@ -16,121 +16,78 @@ enum Direct {
 class RoadWay
 {
 public:
-    vector<Auto *> autoArray;
-
+    vector<Auto *> autoArray; // массив машин
+    // конструктор
     RoadWay() {
         autoArray.clear();
     }
-
+    // добавить машину на полосу
     virtual void addAuto(Auto *newAuto) = 0;
+    // вычислить новую позицию
     virtual Point calcOffssetPosition(Point oldPosition, int speed, float angle) = 0;
+    // получить машину спереди
     virtual Auto * getAheadAuto(Auto *aut) = 0;
+    // свободна ли перед ним дорога
     virtual bool isEmpty(Auto * aut) = 0;
-
-    void deleteAuto(Auto *oldAuto) {
-        int pos;
-
-        for (int i = 0; i < autoArray.size(); ++i) {
-            if (autoArray[i] == oldAuto) {
-                pos = i;
-                break;
-            }
-        }
-        autoArray.erase(autoArray.begin() + pos);
-    }
+    // удалить машину с полосы
+    void deleteAuto(Auto *oldAuto);
 };
 
 class LineRoadWay: public RoadWay {
-    Point entryPoint;
-    Point endPoint;
-    float lineCos;
-    float lineSin;
+    Point entryPoint; // входная точка
+    Point endPoint; // выходная точка
+    float lineCos; // косинус ???
+    float lineSin; // синус ??
 
 public:
+    // конструктор
     LineRoadWay(Point entryPoint, Point endPoint);
-
+    // посчитать смещение
     Point calcOffssetPosition(Point oldPosition, int speed, float angle);
-
+    // добавить машину
     void addAuto(Auto *newAuto);
-
+    // получить входную точку
     Point getEntryPoint() {
         return entryPoint;
     }
-
+    // получить выходную точку
     Point getEndPoint() {
         return endPoint;
     }
-
-    Auto * getAheadAuto(Auto *aut) {
-        if (autoArray.size() <= 1) {
-            return NULL;
-        }
-
-        int distance = 10000000;
-        Point position = aut->getPosition();
-        float endDist = position.distance(endPoint);
-        Auto * currAuto = NULL;
-
-        for (int i = 0; i < autoArray.size(); ++i) {
-            if (aut != autoArray[i]) {
-                Point currPosition = autoArray[i]->getPosition();
-                float currDist = position.distance(currPosition);
-                float currEndDist = currPosition.distance(endPoint);
-                if (currDist < distance && currEndDist < endDist && currDist < 3 * MST * aut->getWidth()) {
-                    currAuto = autoArray[i];
-                }
-            }
-        }
-
-        return currAuto;
-    }
-
-    bool isEmpty(Auto * aut) {
-        Auto * lastAuto = autoArray.size() > 0 ? autoArray.back() : NULL;
-
-        if (!lastAuto) {
-            return true;
-        }
-
-        float distance = lastAuto->getPosition().distance(entryPoint);
-        float width = lastAuto->getWidth() * MST * 3;
-
-        return distance >= width;
-    }
+    // получить машину спереди
+    Auto * getAheadAuto(Auto *aut);
+    // свободна ли дорога впереди
+    bool isEmpty(Auto * aut);
 };
 
 class CircleRoadWay: public RoadWay {
-    Point centerPoint;
-    float radius;
-    int time;
+    Point centerPoint; // центр круговой дороги
+    float radius; // радиус
+    int time; // время
 
 public:
+    // конструктор
     CircleRoadWay(Point centerPoint, float radius);
-
+    // посчитать смещение
     Point calcOffssetPosition(Point oldPosition, int speed, float angle);
-
+    // добавить машину
     void addAuto(Auto *newAuto) {
         autoArray.push_back(newAuto);
     }
-
+    // получить центр
     Point getCenterPoint() {
         return centerPoint;
     }
-
+    // поучить радиус
     int getRadius() {
         return radius;
     }
-
+    // получить машину, приближающуюся к нам по соседней полосе
     Auto * getAheadAuto(Auto *aut);
-
+    // получить машину перед нами
     Auto * getPrevAuto(Auto *aut);
-
-    bool isEmpty(Auto * aut) {
-        Auto * aheadAuto = getAheadAuto(aut);
-        Auto * prevAuto = getPrevAuto(aut);
-
-        return !aheadAuto && !prevAuto;
-    }
+    // свободна ли дорога перед машиной
+    bool isEmpty(Auto * aut);
 };
 
 #endif // ROADWAY_H
