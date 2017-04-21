@@ -24,7 +24,6 @@ CircleRoadWay::CircleRoadWay(Point centerPoint, float radius)
     : radius(radius) {
     this->centerPoint.x = centerPoint.x;
     this->centerPoint.y = centerPoint.y;
-    time = 182;
 }
 
 Point CircleRoadWay::calcOffssetPosition(Point oldPosition, int speed, float angle) {

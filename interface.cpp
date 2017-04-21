@@ -3,7 +3,7 @@
 #include "constants.h"
 #include <iostream>
 
-void renderAuto(Auto *aut, QGraphicsScene *scene) {
+void Interface::renderAuto(Auto *aut) {
     Point center = aut->getPosition();
     int width = aut->getWidth() * MST;
     QColor color;
@@ -41,18 +41,18 @@ void renderAuto(Auto *aut, QGraphicsScene *scene) {
     scene->addItem(text);
 }
 
-void renderLineRoadWay(LineRoadWay *roadWay, QGraphicsScene *scene, bool open = true) {
+void Interface::renderLineRoadWay(LineRoadWay *roadWay, bool open) {
     Point entryPoint = roadWay->getEntryPoint();
     Point endPoint = roadWay->getEndPoint();
     QPen pen(QColor(open ? Qt::gray : Qt::darkRed), WIDTH_ROADWAY * MST);
     scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y, pen);
 
     for (int i = 0; i < roadWay->autoArray.size(); ++i) {
-        renderAuto(roadWay->autoArray[i], scene);
+        renderAuto(roadWay->autoArray[i]);
     }
 }
 
-void renderCircleRoadWay(CircleRoadWay *roadWay, QGraphicsScene *scene) {
+void Interface::renderCircleRoadWay(CircleRoadWay *roadWay) {
     int radius = roadWay->getRadius() + MST * WIDTH_ROADWAY / 2;
     Point center = roadWay->getCenterPoint();
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-radius, -radius, 2 * radius, 2 * radius);
@@ -63,13 +63,13 @@ void renderCircleRoadWay(CircleRoadWay *roadWay, QGraphicsScene *scene) {
     scene->addItem(circle);
 
     for (int i = 0; i < roadWay->autoArray.size(); ++i) {
-        renderAuto(roadWay->autoArray[i], scene);
+        renderAuto(roadWay->autoArray[i]);
     }
 }
 
-void renderLineRoad(LineRoad * road, QGraphicsScene *scene ) {
+void Interface::renderLineRoad(LineRoad * road) {
     for (int i = 0; i < road->roadWays.size(); ++i) {
-        renderLineRoadWay((LineRoadWay *)road->roadWays[i], scene, road->isOpen());
+        renderLineRoadWay((LineRoadWay *)road->roadWays[i], road->isOpen());
     }
 
     Point entryPoint = road->getEntryPoint();
@@ -77,9 +77,9 @@ void renderLineRoad(LineRoad * road, QGraphicsScene *scene ) {
     scene->addLine(entryPoint.x, entryPoint.y, endPoint.x, endPoint.y, road->isOpen() ? QPen(Qt::white) : QPen(Qt::red));
 }
 
-void renderCircleRoad(CircleRoad * road, QGraphicsScene *scene) {
+void Interface::renderCircleRoad(CircleRoad * road) {
     for (int i = road->roadWays.size() - 1; i >= 0; --i) {
-        renderCircleRoadWay((CircleRoadWay *)road->roadWays[i], scene);
+        renderCircleRoadWay((CircleRoadWay *)road->roadWays[i]);
     }
 
     int innerRadius = road->getInnerRadius();
@@ -92,13 +92,18 @@ void renderCircleRoad(CircleRoad * road, QGraphicsScene *scene) {
     scene->addItem(circle);
 }
 
-void renderModel(Model * model, QGraphicsScene *scene) {
-    renderCircleRoad((CircleRoad *)model->roads[0], scene);
+void Interface::renderModel(Model * model) {
+    renderCircleRoad((CircleRoad *)model->roads[0]);
 
     for (int i = 1; i < model->roads.size(); ++i) {
-        renderLineRoad((LineRoad *)model->roads[i], scene);
+        renderLineRoad((LineRoad *)model->roads[i]);
     }
  }
+
+
+
+
+
 
 Interface::Interface(QWidget *parent) :
     QWidget(parent),
@@ -125,7 +130,7 @@ void Interface::onGenerate()
     scene->clear();
     myModel->step();
 
-    renderModel(myModel, scene);
+    renderModel(myModel);
 }
 
 void Interface::on_pushButton_clicked()
@@ -136,7 +141,7 @@ void Interface::on_pushButton_clicked()
     int autosPerMin = ui->lineEdit_3->text().toInt();
     int roadNum = ui->lineEdit_4->text().toInt();
     myModel->start(roadNum, min, max, autosPerMin);
-    renderModel(myModel, scene);
+    renderModel(myModel);
 
     ui->lineEdit->setDisabled(true);
     ui->lineEdit_2->setDisabled(true);

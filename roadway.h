@@ -27,7 +27,7 @@ public:
     virtual Point calcOffssetPosition(Point oldPosition, int speed, float angle) = 0;
     // получить машину спереди
     virtual Auto * getAheadAuto(Auto *aut) = 0;
-    // свободна ли перед ним дорога
+    // свободна ли перед машиной полоса
     virtual bool isEmpty(Auto * aut) = 0;
     // удалить машину с полосы
     void deleteAuto(Auto *oldAuto);
@@ -36,8 +36,8 @@ public:
 class LineRoadWay: public RoadWay {
     Point entryPoint; // входная точка
     Point endPoint; // выходная точка
-    float lineCos; // косинус ???
-    float lineSin; // синус ??
+    float lineCos; // косинус угла наклона прямой
+    float lineSin; // синус угла наклона прямой
 
 public:
     // конструктор
@@ -56,14 +56,13 @@ public:
     }
     // получить машину спереди
     Auto * getAheadAuto(Auto *aut);
-    // свободна ли дорога впереди
+    // свободна ли полоса впереди для данной машины
     bool isEmpty(Auto * aut);
 };
 
 class CircleRoadWay: public RoadWay {
     Point centerPoint; // центр круговой дороги
-    float radius; // радиус
-    int time; // время
+    float radius; // радиус траектории полосы
 
 public:
     // конструктор
@@ -84,7 +83,7 @@ public:
     }
     // получить машину, приближающуюся к нам по соседней полосе
     Auto * getAheadAuto(Auto *aut);
-    // получить машину перед нами
+    // получить машину позади нас
     Auto * getPrevAuto(Auto *aut);
     // свободна ли дорога перед машиной
     bool isEmpty(Auto * aut);

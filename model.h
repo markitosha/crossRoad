@@ -11,7 +11,7 @@ enum State {
 
 class Model
 {
-    int roadNum; // количество дорог
+    int roadNum; // количество открытых дорог
     int height; // высота модели
     int width; // ширина модели
     int autoPerMinute; // частота генерации машин
@@ -22,8 +22,8 @@ class Model
 
 public:
     int maxSpeed; // максимально возможная скорость машины
-    int minSpeed; // минимально возможная скорость машины ???
-    State state; // состояние модели (пауза, стоп, плей ???)
+    int minSpeed; // минимально возможная скорость машины
+    State state; // состояние модели (пауза, стоп, старт)
 
     vector <Road *> roads; // массив дорог
 
@@ -42,7 +42,7 @@ public:
     CircleRoad * getCircleRoad() {
         return (CircleRoad*)roads[0];
     }
-    // получить мою полосу
+    // получить полосу, на которой сейчас автомобиль
     RoadWay * getMyRoadWay(Auto * aut);
     // сгенерировать машину
     void generateAuto();

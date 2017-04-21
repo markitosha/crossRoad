@@ -25,13 +25,13 @@ public:
     Road(int roadWayNum, bool open = true);
     // можно ли войти
     virtual RoadWay * canGetIn(Auto *aut) = 0;
-    // ????
+    // нужно ли притормаживать сейчас
     virtual bool soonRebase(Auto *aut) = 0;
-    // ???
+    // ждем удобного случая для перестроения
     virtual bool waitingEmpty(Auto *aut) = 0;
-    // ??
+    // начало перестроения
     virtual bool rebaseStarted(Auto *aut) = 0;
-    // пустая ли
+    // свободна ли для перестроения
     virtual bool isEmpty(Auto *aut) = 0;
     // открыта ли
     bool isOpen() {
@@ -40,32 +40,29 @@ public:
 };
 
 class LineRoad : public Road {
-    Point entryPoint; // начало середней полосы дороги
-    Point endPoint; // конец средней полосы дороги
+    Point entryPoint; // начало разделительной полосы дороги
+    Point endPoint; // конец разделительной полосы дороги
 
 public:
     // конструктор
     LineRoad(Point entryPoint,  Point endPoint, int roadWayNum, Point center, Dir pos = IN, bool open = true);
-    // получить входную точку
+    // получить точку начала дороги
     Point getEntryPoint() {
         return entryPoint;
     }
-    // получить выходную точку
+    // получить точку конца дороги
     Point getEndPoint() {
         return endPoint;
     }
-    // на какую полосу можно заехать
+    // нужно ли перестроиться, если да, то куда
     RoadWay * canGetIn(Auto *aut);
-    // пустая ли
+    // свободна ли для перестроения
     bool isEmpty(Auto *aut) {
         LineRoadWay * newRoadWay = (LineRoadWay*)this->roadWays[0];
         return newRoadWay->isEmpty(aut);
     }
-
     bool soonRebase(Auto *aut);
-
     bool waitingEmpty(Auto *aut);
-
     bool rebaseStarted(Auto *aut);
 };
 
@@ -80,7 +77,7 @@ public:
     int getInnerRadius() {
         return innerCircleRadius;
     }
-    // получит координаты центра
+    // получить координаты центра
     Point getCenterPoint() {
         return centerPoint;
     }

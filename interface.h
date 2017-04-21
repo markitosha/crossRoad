@@ -18,7 +18,12 @@ namespace Ui {
 class Interface : public QWidget
 {
     Q_OBJECT
-
+    void renderModel(Model * model);
+    void renderCircleRoad(CircleRoad * road);
+    void renderLineRoad(LineRoad * road);
+    void renderCircleRoadWay(CircleRoadWay *roadWay);
+    void renderLineRoadWay(LineRoadWay *roadWay, bool open = true);
+    void renderAuto(Auto *aut);
 public:
     explicit Interface(QWidget *parent = 0);
     ~Interface();
