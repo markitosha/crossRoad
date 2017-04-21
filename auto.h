@@ -7,13 +7,13 @@ enum Color {
     RED, GREEN, YELLOW, BLACK
 };
 
-enum State {
+enum StateAuto {
     RUN, REBUILD
 };
 
 class Auto {
     Color color;
-    State state;
+    StateAuto state;
     Point center;
     int speed;
     int startRoad;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>827</width>
-    <height>560</height>
+    <width>1016</width>
+    <height>610</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,6 +45,20 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Количество доступных дорог</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_4">
+        <property name="text">
+         <string>6</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Плотность потока (авто / мин)</string>
@@ -54,7 +68,7 @@
       <item>
        <widget class="QLineEdit" name="lineEdit_3">
         <property name="text">
-         <string>5</string>
+         <string>10</string>
         </property>
        </widget>
       </item>

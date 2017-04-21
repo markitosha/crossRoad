@@ -5,25 +5,36 @@
 #include "constants.h"
 #include <random>
 
+enum State {
+    START, PAUSE, STOP
+};
+
 class Model
 {
     int roadNum;
     int height;
     int width;
-    int stepCounter;
     int autoPerMinute;
+    int stepCounter;
+
+    void init(int roadNm, int min, int max, int autoPerMin);
 
 public:
     int maxSpeed;
     int minSpeed;
+    State state;
 
     vector <Road *> roads;
 
-    Model(int roadNum, int roadWayNum, int height, int width);
+    Model() {
+        state = STOP;
+    }
 
-    void start();
+    void start(int roadNm, int min, int max, int autoPerMin);
 
     void step();
+
+    void stop();
 
     CircleRoad * getCircleRoad() {
         return (CircleRoad*)roads[0];

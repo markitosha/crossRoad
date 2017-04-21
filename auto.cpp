@@ -18,7 +18,6 @@ Auto::Auto(int speed, int startRoad,int finishRoad) :
 }
 
 void Auto::changeSpeed(int newSpeed) {
-    int maxSpeed = ((Model*)model)->maxSpeed;
     newSpeed = newSpeed > maxSpeed ? maxSpeed : newSpeed;
     newSpeed = newSpeed < 0 ? 0 : newSpeed;
     color = newSpeed > speed ? RED : (newSpeed < speed ? YELLOW : GREEN);
@@ -115,7 +114,7 @@ void Auto::checkSpeed(void *roadWay) {
         }
     } else {
         if (speed == 0) {
-            changeSpeed((maxSpeed - minSpeed) * 3 / 4);
+            changeSpeed(maxSpeed * 3 / 5);
         }
 
         if (soonRebase) {

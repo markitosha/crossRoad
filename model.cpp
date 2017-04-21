@@ -1,32 +1,36 @@
 #include "model.h"
 #include <cmath>
 
-Model::Model(int roadNum, int roadWayNum, int height, int width) : roadNum(roadNum), height(height), width(width) {
+void Model::init(int roadNm, int min, int max, int autoPerMin) {
+    int roadWayNum = 2;
     stepCounter = 0;
-    autoPerMinute = 100;
-    minSpeed = 10;
-    maxSpeed = 100;
+    autoPerMinute = autoPerMin;
+    minSpeed = min;
+    maxSpeed = max;
+    roadNum = roadNm;
+    height = 500;
+    width = 500;
     auto center = Point(width / 2, height / 2);
     auto centerCircle = new CircleRoad(center, INNER_RADIUS * MST, roadWayNum);
     roads.push_back(centerCircle);
     float   angl2 = 5 * PI / 6,
             angl3 = 7 * PI / 6,
             rad = centerCircle->getFullRadius();
-
-    roads.push_back(new LineRoad(Point(center.x, height), Point(center.x, center.y + rad), roadWayNum, center)); // 1 -  низ
-    roads.push_back(new LineRoad(Point(center.x, 0), Point(center.x, center.y - rad), roadWayNum, center, OUT)); // 2 - верх
+    roads.push_back(new LineRoad(Point(center.x, height), Point(center.x, center.y + rad), roadWayNum, center, IN, roadNum-- > 0)); // 1 -  низ
+    roads.push_back(new LineRoad(Point(center.x, 0), Point(center.x, center.y - rad), roadWayNum, center, OUT, roadNum-- > 0)); // 2 - верх
     roads.push_back(new LineRoad(Point(0, center.y * (1 + sin(angl2))), // 3 - лево низ
                                  Point(center.x + rad * cos(angl2), center.y + rad * sin(angl2)),
-                                 roadWayNum, center, IN, false));
+                                 roadWayNum, center, IN, roadNum-- > 0));
     roads.push_back(new LineRoad(Point(0, center.y * (1 + sin(angl3))), // 4 -- лево верх
                                  Point(center.x + rad * cos(angl3), center.y + rad * sin(angl3)),
-                                 roadWayNum, center));
+                                 roadWayNum, center, IN, roadNum-- > 0));
     roads.push_back(new LineRoad(Point(width, center.y * (1 + sin(angl2))), // 5 -- право низ
                                  Point(center.x - rad * cos(angl2), center.y + rad * sin(angl2)),
-                                 roadWayNum, center, OUT, false));
+                                 roadWayNum, center, OUT, roadNum-- > 0));
     roads.push_back(new LineRoad(Point(width, center.y * (1 + sin(angl3))), // 6 -- право верх
                                  Point(center.x - rad * cos(angl3), center.y + rad * sin(angl3)),
-                                 roadWayNum, center, OUT));
+                                 roadWayNum, center, OUT, roadNum-- > 0));
+    state = START;
 }
 
 void Model::generateAuto() {
@@ -55,27 +59,52 @@ void Model::generateAuto() {
     newAuto->setModel(this);
 }
 
-void Model::start() {
-    generateAuto();
-}
-
-void Model::step() {
-    stepCounter++;
-
-    if (stepCounter % (60000 / FPS / autoPerMinute) == 0) {
+void Model::start(int roadNm, int min, int max, int autoPerMin) {
+    if (state == START) {
+        state = PAUSE;
+    } else if (state == STOP) {
+        init(roadNm, min, max, autoPerMin);
+        generateAuto();
+    } else {
+        state = START;
         generateAuto();
     }
+}
 
-    if (stepCounter == 60000 / FPS) {
-        stepCounter = 0;
-    }
-
+void Model::stop() {
     for(int i = 0; i < roads.size(); ++i) {
         Road *road = roads[i];
         for(int i = 0; i < road->roadWays.size(); ++i) {
             RoadWay *roadWay = road->roadWays[i];
-            for(int i = 0; i < roadWay->autoArray.size(); ++i) {
-                roadWay->autoArray[i]->step(roadWay);
+            roadWay->autoArray.clear();
+        }
+        road->roadWays.clear();
+    }
+
+    roads.clear();
+
+    state = STOP;
+}
+
+void Model::step() {
+    if (state == START) {
+        stepCounter++;
+
+        if (stepCounter % (60000 / FPS / autoPerMinute) == 0) {
+            generateAuto();
+        }
+
+        if (stepCounter == 60000 / FPS) {
+            stepCounter = 0;
+        }
+
+        for(int i = 0; i < roads.size(); ++i) {
+            Road *road = roads[i];
+            for(int i = 0; i < road->roadWays.size(); ++i) {
+                RoadWay *roadWay = road->roadWays[i];
+                for(int i = 0; i < roadWay->autoArray.size(); ++i) {
+                    roadWay->autoArray[i]->step(roadWay);
+                }
             }
         }
     }

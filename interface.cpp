@@ -34,6 +34,9 @@ void renderAuto(Auto *aut, QGraphicsScene *scene) {
     text->setPos(center.x - width / 2, center.y - width / 2);
     circle->setPos(center.x, center.y);
     circle->setBrush(color);
+    circle->setPen(color);
+    circle->setZValue(1000);
+    text->setZValue(1001);
     scene->addItem(circle);
     scene->addItem(text);
 }
@@ -49,10 +52,13 @@ void renderLineRoadWay(LineRoadWay *roadWay, QGraphicsScene *scene) {
 }
 
 void renderCircleRoadWay(CircleRoadWay *roadWay, QGraphicsScene *scene) {
-    int radius = roadWay->getRadius();
+    int radius = roadWay->getRadius() + MST * WIDTH_ROADWAY / 2;
     Point center = roadWay->getCenterPoint();
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-radius, -radius, 2 * radius, 2 * radius);
     circle->setPos(center.x, center.y);
+    circle->setBrush(Qt::gray);
+    circle->setPen(QColor(Qt::white));
+    circle->setZValue(900);
     scene->addItem(circle);
 
     for (int i = 0; i < roadWay->autoArray.size(); ++i) {
@@ -71,7 +77,7 @@ void renderLineRoad(LineRoad * road, QGraphicsScene *scene ) {
 }
 
 void renderCircleRoad(CircleRoad * road, QGraphicsScene *scene) {
-    for (int i = 0; i < road->roadWays.size(); ++i) {
+    for (int i = road->roadWays.size() - 1; i >= 0; --i) {
         renderCircleRoadWay((CircleRoadWay *)road->roadWays[i], scene);
     }
 
@@ -79,7 +85,9 @@ void renderCircleRoad(CircleRoad * road, QGraphicsScene *scene) {
     Point center = road->getCenterPoint();
     QGraphicsEllipseItem *circle = new QGraphicsEllipseItem(-innerRadius, -innerRadius, 2 * innerRadius, 2 * innerRadius);
     circle->setPos(center.x, center.y);
-    circle->setPen(QColor(255, 255, 255));
+    circle->setBrush(Qt::green);
+    circle->setPen(QColor(Qt::white));
+    circle->setZValue(950);
     scene->addItem(circle);
 }
 
@@ -102,13 +110,8 @@ Interface::Interface(QWidget *parent) :
 
     animationTimer = new QTimer(this);
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(onGenerate()));
-    animationTimer->start(1000 / FPS);
 
-    myModel = new Model(1, 2, 500, 500);
-    myModel->start();
-
-    renderModel(myModel, scene);
-    stepCounter = 0;
+    myModel = new Model();
 }
 
 Interface::~Interface()
@@ -122,4 +125,42 @@ void Interface::onGenerate()
     myModel->step();
 
     renderModel(myModel, scene);
+}
+
+void Interface::on_pushButton_clicked()
+{
+    animationTimer->start(1000 / FPS);
+    int max = ui->lineEdit->text().toInt();
+    int min = ui->lineEdit_2->text().toInt();
+    int autosPerMin = ui->lineEdit_3->text().toInt();
+    int roadNum = ui->lineEdit_4->text().toInt();
+    myModel->start(roadNum, min, max, autosPerMin);
+    renderModel(myModel, scene);
+
+    ui->lineEdit->setDisabled(true);
+    ui->lineEdit_2->setDisabled(true);
+    ui->lineEdit_3->setDisabled(true);
+    ui->lineEdit_4->setDisabled(true);
+
+    if (ui->pushButton->text() == "Старт") {
+        ui->pushButton->setText("Пауза");
+    } else {
+        ui->pushButton->setText("Старт");
+    }
+
+    ui->pushButton_2->setDisabled(false);
+}
+
+void Interface::on_pushButton_2_clicked()
+{
+    myModel->stop();
+    scene->clear();
+    animationTimer->stop();
+    ui->pushButton->setText("Старт");
+    ui->pushButton_2->setDisabled(true);
+    ui->lineEdit->setDisabled(false);
+    ui->lineEdit_2->setDisabled(false);
+    ui->lineEdit_3->setDisabled(false);
+    ui->lineEdit_4->setDisabled(false);
+
 }

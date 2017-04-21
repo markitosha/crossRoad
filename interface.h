@@ -26,13 +26,17 @@ public:
 private slots:
     void onGenerate();
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::Widget *ui;
     QGraphicsScene *scene;
     QTimer *animationTimer;
     QTimer *generatorTimer;
     Model *myModel;
-    int stepCounter;
+
 };
 
 #endif // WIDGET_H
